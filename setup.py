@@ -1,9 +1,9 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 long_description = open('README.rst').read()
 
 
-with open("census.py", "r") as module_file:
+with open("census/__init__.py", "r") as module_file:
     for line in module_file:
         if line.startswith("__version__"):
             version_string = line.split("=")[1]
@@ -12,13 +12,14 @@ with open("census.py", "r") as module_file:
 setup(
     name="census",
     version=version,
-    py_modules=['census'],
+    # py_modules=['census'],
     author="Jeremy Carbaugh",
     author_email='jcarbaugh@sunlightfoundation.com',
     license="BSD",
     url="http://github.com/sunlightlabs/census",
     long_description=long_description,
-    packages=find_packages(),
+    packages=['census'],
+    include_package_data=True,
     description="A wrapper for the US Census Bureau's API",
     platforms=["any"],
     classifiers=[
@@ -29,5 +30,6 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
     ],
-    install_requires=['requests>=1.1.0', 'us>=0.7'],
+    install_requires=['requests>=1.0.0', 'us>=0.7'],
+    test_suite='tests',
 )
