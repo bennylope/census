@@ -47,38 +47,34 @@ class Client(object):
     def years(self):
         return [int(y) for y in DEFINITIONS[self.dataset].keys()]
 
-    def fields(self, year, flat=False):
+    def fields(self, dataset, year):
+        """
+        Returns the data set's available field names in a dictionary of the form:
 
-        data = {}
+            {
+                "id1": "concept1: label1",
+                "id2": "concept1: label2",
+                "id3": "concept1: label3",
+            }
 
-        fields_url = DEFINITIONS[self.dataset].get(str(year))
-
+        """
+        fields_url = DEFINITIONS[dataset].get(str(year))
         if not fields_url:
-            raise CensusException('%s is not available for %s' % (self.dataset, year))
+            raise CensusException('%s is not available for %s' % (dataset, year))
 
         resp = requests.get(fields_url)
         doc = XML(resp.text)
 
-        if flat:
-
-            for elem in doc.iter('variable'):
-                data[elem.attrib['name']] = "%s: %s" % (elem.attrib['concept'], elem.text)
-
-        else:
-
-            for concept_elem in doc.iter('concept'):
-
-                concept = concept_elem.attrib['name']
-                variables = {}
-
-                for variable_elem in concept_elem.iter('variable'):
-                    variables[variable_elem.attrib['name']] = variable_elem.text
-
-                data[concept] = variables
-
-        return data
+        return {
+            elem.attrib['{http://www.w3.org/XML/1998/namespace}id']: "%s: %s" % (elem.attrib['concept'], elem.attrib['label'])
+                for elem in doc.iter('{http://thedataweb.rm.census.gov/api/discovery/}var')
+                    if elem.attrib.get('concept')
+        }
 
     def get(self, fields, geo, year=None):
+        """
+        Perfoms an API request
+        """
 
         if len(fields) > 50:
             raise CensusException("only 50 columns per call are allowed")
@@ -132,6 +128,9 @@ class ACS5Client(Client):
 
     default_year = 2011
     dataset = 'acs5'
+
+    def fields(self, year):
+        return super(ACS5Client, self).fields(self.dataset, year)
 
     @supported_years(2011, 2010)
     def us(self, fields, **kwargs):
@@ -195,6 +194,9 @@ class ACS1DpClient(Client):
     default_year = 2012
     dataset = 'acs1/profile'
 
+    def fields(self, year):
+        return super(ACS1DpClient, self).fields(self.dataset, year)
+
     @supported_years(2012)
     def us(self, fields, **kwargs):
         return self.get(fields, geo={'for': 'us:1'}, **kwargs)
@@ -241,6 +243,9 @@ class SF1Client(Client):
 
     default_year = 2010
     dataset = 'sf1'
+
+    def fields(self, year):
+        return super(SF1Client, self).fields(self.dataset, year)
 
     @supported_years(2010, 2000, 1990)
     def state(self, fields, state_fips, **kwargs):
@@ -329,6 +334,9 @@ class SF3Client(Client):
 
     default_year = 2000
     dataset = 'sf3'
+
+    def fields(self, year):
+        return super(SF3Client, self).fields(self.dataset, year)
 
     @supported_years(2000, 1990)
     def state(self, fields, state_fips, **kwargs):
