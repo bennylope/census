@@ -2,6 +2,9 @@
 census
 ======
 
+.. image:: https://travis-ci.org/bennylope/census.svg?branch=master
+        :target: https://travis-ci.org/bennylope/census
+
 A simple wrapper for the United States Census Bureau's API.
 
 Provides access to ACS, SF1, and SF3 data sets.
