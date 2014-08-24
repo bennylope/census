@@ -66,9 +66,10 @@ class Client(object):
         doc = XML(resp.text)
 
         return {
-            elem.attrib['{http://www.w3.org/XML/1998/namespace}id']: "%s: %s" % (elem.attrib['concept'], elem.attrib['label'])
-                for elem in doc.iter('{http://thedataweb.rm.census.gov/api/discovery/}var')
-                    if elem.attrib.get('concept')
+            elem.attrib['{http://www.w3.org/XML/1998/namespace}id']: "{0}: {1}".format(
+                elem.attrib['concept'], elem.attrib['label'])
+            for elem in doc.iter('{http://thedataweb.rm.census.gov/api/discovery/}var')
+            if elem.attrib.get('concept')
         }
 
     def get(self, fields, geo, year=None):
@@ -379,8 +380,8 @@ class Census(object):
         if not session:
             session = requests.session()
 
-        self.acs = ACS5Client(key, year, session)
         self.acs5 = ACS5Client(key, year, session)
+        self.acs = self.acs5
         self.acs1dp = ACS1DpClient(key, year, session)
         self.sf1 = SF1Client(key, year, session)
         self.sf3 = SF3Client(key, year, session)
