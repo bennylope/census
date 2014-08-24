@@ -18,7 +18,7 @@ DEFINITIONS = {
         '2010': 'http://api.census.gov/data/2010/acs5/variables.xml',
     },
     'acs1/profile': {
-        '2012': 'http://api.census.gov/data/2012/acs5/profile/variables.xml',
+        '2012': 'http://api.census.gov/data/2012/acs1/profile/variables.xml',
     },
     'sf1': {
         '2010': 'http://api.census.gov/data/2010/sf1/variables.xml',
