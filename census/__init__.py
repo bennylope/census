@@ -4,9 +4,9 @@ __version__ = "0.6"
 import json
 import requests
 
-from functools import wraps
 from xml.etree.ElementTree import XML
-from .exceptions import APIKeyError, CensusException, UnsupportedYearException
+from .exceptions import APIKeyError, CensusException
+from .utils import supported_years
 
 
 ALL = '*'  # Used to query all states
@@ -30,22 +30,6 @@ DEFINITIONS = {
         '1990': 'http://api.census.gov/data/1990/sf3/variables.xml',
     },
 }
-
-
-def supported_years(*years):
-    """
-    Decorator verifies requested year is available from the specified years
-    argument.
-    """
-    def inner(func):
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            year = kwargs.get('year', self.default_year)
-            if int(year) not in years:
-                raise UnsupportedYearException('geography is not available in %s' % year)
-            return func(self, *args, **kwargs)
-        return wrapper
-    return inner
 
 
 class Client(object):
