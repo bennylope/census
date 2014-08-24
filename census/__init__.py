@@ -33,11 +33,8 @@ DEFINITIONS = {
 
 
 def list_or_str(v):
-    """ Convert a single value into a list.
-    """
-    if isinstance(v, (list, tuple)):
-        return v
-    return [v]
+    """Convert a single value into a list."""
+    return v if isinstance(v, (list, tuple)) else [v]
 
 
 def supported_years(*years):
@@ -57,6 +54,9 @@ def supported_years(*years):
 
 
 class Client(object):
+    """
+    Base client class for interacting with the Census API.
+    """
 
     def __init__(self, key, year=None, session=None):
         self._key = key
