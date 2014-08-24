@@ -30,6 +30,6 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
     ],
-    install_requires=['requests>=1.0.0', 'us>=0.7'],
+    install_requires=['requests>=1.0.0'],
     test_suite='tests',
 )

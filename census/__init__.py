@@ -1,11 +1,11 @@
 __title__ = "census"
 __version__ = "0.6"
 
-from functools import wraps
-from xml.etree.ElementTree import XML
 import json
 import requests
 
+from functools import wraps
+from xml.etree.ElementTree import XML
 from .exceptions import APIKeyError, CensusException, UnsupportedYearException
 
 
@@ -30,11 +30,6 @@ DEFINITIONS = {
         '1990': 'http://api.census.gov/data/1990/sf3/variables.xml',
     },
 }
-
-
-def list_or_str(v):
-    """Convert a single value into a list."""
-    return v if isinstance(v, (list, tuple)) else [v]
 
 
 def supported_years(*years):
@@ -107,7 +102,7 @@ class Client(object):
         if year is None:
             year = self.default_year
 
-        fields = list_or_str(fields)
+        fields = fields if isinstance(fields, (list, tuple)) else [fields]
 
         url = ENDPOINT_URL % (year, self.dataset)
 
