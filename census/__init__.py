@@ -9,7 +9,7 @@ import requests
 from .exceptions import APIKeyError, CensusException, UnsupportedYearException
 
 
-ALL = '*'
+ALL = '*'  # Used to query all states
 ENDPOINT_URL = 'http://api.census.gov/data/%s/%s'
 DEFINITIONS = {
     'acs5': {
@@ -145,6 +145,11 @@ class Client(object):
 
 
 class ACS5Client(Client):
+    """
+    Client class for querying the American Community Survey 5 Year data set.
+
+    http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html
+    """
 
     default_year = 2011
     dataset = 'acs5'
@@ -202,6 +207,11 @@ class ACS5Client(Client):
 
 
 class ACS1DpClient(Client):
+    """
+    Client class for querying the American Community Survey 1 Year data set.
+
+    http://www.census.gov/data/developers/data-sets/acs-survey-1-year-data.html
+    """
 
     default_year = 2012
     dataset = 'acs1/profile'
@@ -225,6 +235,30 @@ class ACS1DpClient(Client):
 
 
 class SF1Client(Client):
+    """
+    Client class for querying Summary File 1 data from the Decennial Census
+    data sets.
+
+    As described by the Census Bureau:
+
+        Summary File 1 (SF 1) contains the data compiled from the questions
+        asked of all people and about every housing unit. Population items
+        include sex, age, race, Hispanic or Latino origin, household
+        relationship, household type, household size, family type, family size,
+        and group quarters. Housing items include occupancy status, vacancy
+        status, and tenure (whether a housing unit is owner-occupied or
+        renter-occupied).
+
+        SF 1 includes population and housing characteristics for the total
+        population, population totals for an extensive list of race (American
+        Indian and Alaska Native tribes, Asian, and Native Hawaiian and Other
+        Pacific Islander) and Hispanic or Latino groups, and population and
+        housing characteristics for a limited list of race and Hispanic or
+        Latino groups. Population and housing items may be cross-tabulated.
+        Selected aggregates and medians also are provided.
+
+    http://www.census.gov/data/developers/data-sets/decennial-census-data.html
+    """
 
     default_year = 2010
     dataset = 'sf1'
@@ -300,6 +334,19 @@ class SF1Client(Client):
 
 
 class SF3Client(Client):
+    """
+    Client class for querying Summary File 3 data from the Decennial Census
+    data sets.
+
+    As described by the Census Bureau:
+
+        Summary File 3 consists of 813 detailed tables of Census [2000] social,
+        economic and housing characteristics compiled from a sample of
+        approximately 19 million housing units (about 1 in 6 households) that
+        received the Census [2000] long-form questionnaire.
+
+    http://www.census.gov/data/developers/data-sets/decennial-census-data.html
+    """
 
     default_year = 2000
     dataset = 'sf3'
@@ -333,8 +380,12 @@ class SF3Client(Client):
 
 
 class Census(object):
+    """
+    Master client class which provides the primary interface for querying all
+    Census data.
+    """
 
-    ALL = ALL
+    ALL = ALL  # Convenience attribute for querying all states
 
     def __init__(self, key, year=None, session=None):
 
