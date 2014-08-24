@@ -13,7 +13,7 @@ ALL = '*'  # Used to query all states
 ENDPOINT_URL = 'http://api.census.gov/data/%s/%s'
 DEFINITIONS = {
     'acs5': {
-        # '2012': 'http://api.census.gov/data/2012/acs5/variables.xml',
+        '2012': 'http://api.census.gov/data/2012/acs5/variables.xml',
         '2011': 'http://api.census.gov/data/2011/acs5/variables.xml',
         '2010': 'http://api.census.gov/data/2010/acs5/variables.xml',
     },
